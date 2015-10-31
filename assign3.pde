@@ -58,10 +58,10 @@ void setup () {
   fighterX = 575 ;
   fighterY = 240 ;
   enemyFlyX = -50 ;
-  enemyFlyY = floor( random(50, 420) );
+  enemyFlyY = floor( random(80, 400) );
   
   fighterSpeed = 6 ;
-  enemySpeed = 3 ;
+  enemySpeed = 4 ;
 }
 
 void draw() {
@@ -124,9 +124,85 @@ void draw() {
         if (fighterX < 590) {
           fighterX += fighterSpeed ;
         }
-      }  
+      }   
       
-    //HP_BAR
+    //ENEMY
+      enemyFlyX += enemySpeed;
+      enemyFlyX %= width + 420;
+      enemyFlyY %= height;
+      
+      //if (enemyFlyX == 0) {
+      //  enemyFlyY = floor( random(50,420) );
+      //}  
+      
+      switch (enemyState) {
+        
+        case ENEMY_LINE :
+        
+          for (int i = 0; i > -400; i -= 80) {
+            image(enemyLeft, enemyFlyX + i, enemyFlyY);
+          }   
+          if (enemyFlyX > width + 400) {        
+            enemyFlyX = -100 ;
+            enemyFlyX += enemySpeed ;
+            enemyFlyY = floor( random(80,240) );
+            enemyState = 1 ;
+            
+          }
+          
+        break;       
+        
+        case ENEMY_SLASH :
+        
+          for (int i = 0; i > -400; i -= 80) {
+            for (int j = 0; j < 200; j += 40) {
+              if (i == -j * 2) {
+                image(enemyLeft, enemyFlyX + i, enemyFlyY + j);
+              }
+            }
+          }  
+          if(enemyFlyX > width + 400){
+            enemyFlyX = -100 ;
+            enemyFlyX += enemySpeed ;
+            enemyFlyY = floor( random(200,280) );
+            enemyState = 2 ;
+            
+          }
+          
+        break;        
+        
+        case ENEMY_QUAD :
+        
+          for(int i = 0; i > -180; i -= 60){
+            image(enemyLeft, enemyFlyX + i, enemyFlyY + i);
+            image(enemyLeft, enemyFlyX + i, enemyFlyY - i);
+            image(enemyLeft, enemyFlyX - 180, enemyFlyY - 60);
+            image(enemyLeft, enemyFlyX - 180, enemyFlyY + 60);
+            image(enemyLeft, enemyFlyX - 240, enemyFlyY);
+          }    
+          if(enemyFlyX > width + 400){
+            enemyFlyX = -50 ;
+            enemyFlyX += enemySpeed ;
+            enemyFlyY = floor( random(80,400) );
+            enemyState = 0 ;
+          }  
+          
+        break;
+      }
+      
+      /* Enemy acceleration */
+        //enemyFlyX += addSpeed * enemyFlyX;
+        
+      /* Enemy proximity */
+        //if(enemyFlyX > 150){
+        //  if(enemyFlyY >= fighterY){
+        //    enemyFlyY -= enemySpeed;
+        //  }
+        //  if(enemyFlyY < fighterY){
+        //    enemyFlyY += enemySpeed;
+        //  }
+        //}   
+          //HP_BAR
       fill (#FF0000);
       rect (35, 15, hpBar, 30);
       image(healthFrame, 28, 15); 
@@ -154,83 +230,7 @@ void draw() {
         //  hpBar = 20*HP_PERCENT;
         //  fighterX = 575 ;
         //  fighterY = 240 ;
-        //  }  
-      
-    //ENEMY
-      enemyFlyX += enemySpeed;
-      enemyFlyX %= width + 420;
-      enemyFlyY %= height;
-      
-      if (enemyFlyX == 0) {
-        enemyFlyY = floor( random(50,420) );
-      }  
-      
-      switch (enemyState) {
-        
-        case ENEMY_LINE :
-        
-          for (int i = 0; i > -400; i -= 80) {
-            image(enemyLeft, enemyFlyX + i, enemyFlyY);
-          }   
-          if (enemyFlyX > width + 400) {        
-            enemyFlyX = -50 ;
-            enemyFlyX += enemySpeed ;
-            enemyFlyY = floor( random(50,420) );
-            enemyState = 1 ;
-          }
-          
-        break;       
-        
-        case ENEMY_SLASH :
-        
-          for (int i = 0; i > -400; i -= 80) {
-            for (int j = 0; j < 200; j += 40) {
-              if (i == -j * 2) {
-                image(enemyLeft, enemyFlyX + i, enemyFlyY + j);
-              }
-            }
-          }  
-          if(enemyFlyX > width + 400){
-            enemyFlyX = -50 ;
-            enemyFlyX += enemySpeed ;
-            enemyFlyY = floor( random(50,420) );
-            enemyState = 2 ;
-          }
-          
-        break;        
-        
-        case ENEMY_QUAD :
-        
-          for(int i = 0; i > -180; i -= 60){
-            image(enemyLeft, enemyFlyX + i, enemyFlyY + i);
-            image(enemyLeft, enemyFlyX + i, enemyFlyY - i);
-            image(enemyLeft, enemyFlyX - 180, enemyFlyY - 60);
-            image(enemyLeft, enemyFlyX - 180, enemyFlyY + 60);
-            image(enemyLeft, enemyFlyX - 240, enemyFlyY);
-          }    
-          if(enemyFlyX > width + 400){
-            enemyFlyX = -50 ;
-            enemyFlyX += enemySpeed ;
-            enemyFlyY = floor( random(50,420) );
-            enemyState = 0 ;
-          }  
-          
-        break;
-      }
-      
-      /* Enemy acceleration */
-        //enemyFlyX += addSpeed * enemyFlyX;
-        
-      /* Enemy proximity */
-        //if(enemyFlyX > 150){
-        //  if(enemyFlyY >= fighterY){
-        //    enemyFlyY -= enemySpeed;
-        //  }
-        //  if(enemyFlyY < fighterY){
-        //    enemyFlyY += enemySpeed;
-        //  }
-        //}   
-      
+        //  } 
     break;
       
     case GAME_LOSE :
