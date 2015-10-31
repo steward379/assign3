@@ -61,7 +61,7 @@ void setup () {
   enemyFlyY = floor( random(80, 400) );
   
   fighterSpeed = 6 ;
-  enemySpeed = 4 ;
+  enemySpeed = 8;
 }
 
 void draw() {
